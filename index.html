@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR Shield – QR Code Malicious Link Detection and Safety Verification</title>
+<meta name="description" content="QR Shield decodes QR codes in your browser and checks what they do before you open them.">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="nav" aria-label="Main navigation">
+  <div class="brand"><img src="assets/logo.svg" alt="" width="36" height="36"><span>QR Shield</span></div>
+  <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+  <button class="nav-btn" data-view="scan">Scan QR</button>
+  <button class="nav-btn" data-view="analysis">Safety Analysis</button>
+  <button class="nav-btn" data-view="history">Scan History</button>
+  <button class="nav-btn" data-view="about">About</button>
+</nav>
+
+<main>
+<section id="view-dashboard" class="view active">
+  <header class="hero glass">
+    <img src="assets/logo.svg" alt="QR Shield logo" width="72" height="72">
+    <div>
+      <h1>QR Shield</h1>
+      <p>Decode a QR code, see what it wants to do, and review its risk indicators before you open anything. Everything runs in your browser.</p>
+      <button class="btn primary" data-go="scan">Scan a QR code</button>
+    </div>
+  </header>
+  <div class="stats">
+    <div class="glass stat"><b id="stat-total">0</b><span>Total scans</span></div>
+    <div class="glass stat threat"><b id="stat-threat">0</b><span>Threat detections (high risk)</span></div>
+    <div class="glass stat warn"><b id="stat-susp">0</b><span>Suspicious QR (medium risk)</span></div>
+  </div>
+  <div class="glass card">
+    <h2>Recent scans</h2>
+    <ul id="recent-list" class="hist"></ul>
+  </div>
+</section>
+
+<section id="view-scan" class="view">
+  <h1>Scan QR</h1>
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="upload" role="tab">Upload QR</button>
+    <button class="tab" data-tab="camera" role="tab">Scan Using Camera</button>
+  </div>
+  <div class="glass card" id="tab-upload">
+    <label class="drop" id="drop" tabindex="0">
+      <input type="file" id="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden>
+      <strong>Choose a QR image</strong>
+      <span>or drop a PNG, JPG or JPEG here</span>
+    </label>
+    <div id="preview-wrap" class="preview-wrap" hidden><img id="preview" alt="Uploaded QR preview"></div>
+  </div>
+  <div class="glass card" id="tab-camera" hidden>
+    <div class="cam"><video id="video" playsinline muted></video><div class="frame"></div></div>
+    <div class="row">
+      <button class="btn primary" id="cam-start">Start camera</button>
+      <button class="btn" id="cam-stop" disabled>Stop camera</button>
+    </div>
+    <p class="hint">Camera access needs HTTPS (GitHub Pages provides it) or localhost. Frames are processed on your device and never uploaded.</p>
+  </div>
+  <div id="status" class="status" role="status" aria-live="polite" hidden></div>
+</section>
+
+<section id="view-analysis" class="view">
+  <h1>Safety Analysis</h1>
+  <div id="report"></div>
+</section>
+
+<section id="view-history" class="view">
+  <div class="row between"><h1>Scan History</h1><button class="btn danger" id="clear-history">Clear history</button></div>
+  <div class="glass card"><ul id="history-list" class="hist"></ul></div>
+</section>
+
+<section id="view-about" class="view">
+  <h1>About</h1>
+  <div class="glass card prose">
+    <p>QR Shield is a static web app that decodes QR codes with jsQR, identifies what they contain, and runs local URL checks.</p>
+    <h2>What the local checks can and cannot do</h2>
+    <p>The checks look for patterns that often appear in phishing links, such as IP-address hosts, embedded credentials, lookalike brand names and unusual encoding. They cannot confirm that a site is safe or malicious. A LOW RISK result only means those patterns were not found.</p>
+    <h2>Threat intelligence</h2>
+    <p>No reputation service is connected. A Google Safe Browsing check needs a secure backend that holds the API key. The integration point is ready in <code>script.js</code>, and reports show "Not verified" until it is connected.</p>
+    <h2>Privacy</h2>
+    <p>Images, camera frames and URLs stay in your browser. Scan history is saved in this browser's local storage only.</p>
+  </div>
+</section>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
